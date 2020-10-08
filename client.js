@@ -31,7 +31,7 @@ client.on('error', (err) => {
 
 client.on('close', () => {
     console.log('\nConnection closed');   
-    process.exit(1);
+    process.exit(0);
 });
 
 process.on('uncaughtException', (err) => {

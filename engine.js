@@ -47,11 +47,14 @@ class Engine {
     _getOutput() {
         const map = this.scheme.render();
         let output = `${map}\nscore: ${this.user.score}\nsteps: ${this.user.steps}`;
+        
         if (this.over) {
             const time = getTime(this.startDate, this.finishDate);
             output = `${output}\n${OVER_MESSAGE}\n${TIME_MESSAGE}: ${time}`;
+        } else {
+            output = `${EXIT_MESSAGE}\n${output}`;
         }
-        output = `${EXIT_MESSAGE}\n${output}`;
+
         return output;
     }
 
