@@ -1,0 +1,16 @@
+{
+    "name": "ascii_game",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+    
+    },
+    "scripts": {
+      "server": "node server.js",
+      "client": "node client.js"
+    },
+    "devDependencies": {
+
+    }
+}
+  
