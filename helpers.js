@@ -13,12 +13,14 @@ const getKey = (socket, data) => {
         if (!key || !key.name) {
             return;
         }
+
         if (key.ctrl && key.name === LEFT_KEY) {
             const error = false;
             const over = false;
             removeSocket(socket, over, error);
             return;
         }
+
         return key.name;
     } catch (err) {
         const over = false;
@@ -33,18 +35,20 @@ const addSocket = (socket) => {
 const removeSocket = (socket, over, error) => {
     const { remoteAddress, remotePort } = socket;
     const index = sockets.indexOf(socket);
+
     if (error) console.error(error);
     if (index > -1) {
         sockets.splice(index, 1);
     }
-    if (!socket.destroyed) {
-        if (!over) {
-            const message = error ? SERVER_ERROR : LEFT_MESSAGE;
-            socket.write(`\n${message}`);
-        }
-        socket.destroy();
-        console.log(`DISCONNECTED: ${remoteAddress}:${remotePort}`);
+
+    if (socket.destroyed) return;
+    if (!over) {
+        const message = error ? SERVER_ERROR : LEFT_MESSAGE;
+        socket.write(`\n${message}`);
     }
+    
+    socket.destroy();
+    console.log(`DISCONNECTED: ${remoteAddress}:${remotePort}`);
 };
 
 const getCoordinate = (type) => {

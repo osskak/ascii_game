@@ -12,63 +12,67 @@ const Scheme = require('./scheme');
 
 class Engine {
     constructor() {
-        this.output = null;
-        this.cursor = new Cursor(this);
-        this.scheme = new Scheme(this.cursor);
-        this.user = new User(this.cursor);
-        this.startDate = null;
-        this.finishDate = null;
+        this._cursor = new Cursor(this);
+        this._scheme = new Scheme(this._cursor);
+        this._user = new User(this._cursor);
+        
+        this._output = null;
+        this._startDate = null;
+        this._finishDate = null;
         this.over = false;
     }
 
     setCursor() {
-        this.scheme.setCursor();
+        this._scheme.setCursor();
     }
 
     clearCursor() {
-        this.scheme.clearCursor();
+        this._scheme.clearCursor();
     }
 
     getCell(point) {
-        return this.scheme.getCell(point);
+        return this._scheme.getCell(point);
     }
 
     userAction() {
-        this.user.action();
+        this._user.action();
     }
 
     _checkOver() {
-        if (this.user.score === this.scheme.counts[MONET]) {
-            this.finishDate = new Date();
+        if (this._user.score === this._scheme.counts[MONET]) {
+            this._finishDate = new Date();
             this.over = true;
         }
     }
 
-    _getOutput() {
-        const map = this.scheme.render();
-        let output = `${map}\nscore: ${this.user.score}\nsteps: ${this.user.steps}`;
+    _renderOutput() {
+        const map = this._scheme.render();
+        const { score, steps } = this._user;
+        let output = `${map}\nscore: ${score}\nsteps: ${steps}`;
         
         if (this.over) {
-            const time = getTime(this.startDate, this.finishDate);
+            const time = getTime(this._startDate, this._finishDate);
             output = `${output}\n${OVER_MESSAGE}\n${TIME_MESSAGE}: ${time}`;
         } else {
             output = `${EXIT_MESSAGE}\n${output}`;
         }
 
-        return output;
+        this._output = output;
     }
 
     render(direction, initialization) {
         if (initialization) {
-            this.startDate = new Date();
+            this._startDate = new Date();
+            this._renderOutput();
+        } else {
+            const moved = this._cursor.move(direction);
+            if (moved) {
+                this._checkOver();
+                this._renderOutput();
+            }
         }
 
-        const moved = this.cursor.move(direction, initialization);
-        if (moved) {
-            this._checkOver();
-            this.output = this._getOutput();
-        }
-        return this.output;
+        return this._output;
     }
 }
 

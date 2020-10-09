@@ -4,22 +4,28 @@ const {
 } = require('./helpers');
 
 const dataHandler = (socket, engine) => (data) => {
-    const { remoteAddress, remotePort } = socket;
-    const key = getKey(socket, data);
-    if (!key) return;
-
-    console.log({
-        time: new Date().toISOString(),
-        clientAddress: `${remoteAddress}:${remotePort}`,
-        data: key,
-    });
+    try {
+        const { remoteAddress, remotePort } = socket;
+        const key = getKey(socket, data);
+        if (!key) return;
     
-    const initialization = false;
-    const output = engine.render(key, initialization);
-    socket.write(output);
-    if (engine.over) {
-        const error = false;
-        removeSocket(socket, engine.over, error);
+        console.log({
+            time: new Date().toISOString(),
+            clientAddress: `${remoteAddress}:${remotePort}`,
+            data: key,
+        });
+        
+        const initialization = false;
+        const output = engine.render(key, initialization);
+        socket.write(output);
+        
+        if (engine.over) {
+            const error = false;
+            removeSocket(socket, engine.over, error);
+        }
+    } catch (error) {
+        const over = false;
+        removeSocket(socket, over, error);
     }
 };
 

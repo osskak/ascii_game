@@ -6,9 +6,11 @@ const CURSOR = '@';
 const MONET_SIGN = '$';
 const COVER = '.';
 const CLEAR = ' ';
-const WALL_PERCENTAGE = 2;
-const MONET_PERCENTAGE = 2;
+const WALL_PERCENTAGE = 15;
+const MONET_PERCENTAGE = 15;
 const SIZE = WIDTH * HEIGHT;
+const RECURSION_MAX_CALL_MULTIPLIER = 10;
+const RECURSION_MAX_CALL = SIZE * RECURSION_MAX_CALL_MULTIPLIER;
 
 const UP = 'up';
 const DOWN = 'down';
@@ -95,5 +97,6 @@ module.exports = {
     CELL_PERCETAGE,
     CELL_TYPES,
     CELL_KEYS: Object.keys(CELL_PERCETAGE),
-    CUSTOM_CELL: [MONET, WALL_SIGN, CURSOR],
+    CUSTOM_CELL: [MONET_SIGN, WALL_SIGN, CURSOR],
+    RECURSION_MAX_CALL,
 };

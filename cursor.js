@@ -14,7 +14,7 @@ const { getCoordinate } = require('./helpers');
 
 class Cursor {
     constructor(engine) {
-        this.engine = engine;
+        this._engine = engine;
         this.previous = {
             x: getCoordinate(X),
             y: getCoordinate(Y),
@@ -24,19 +24,19 @@ class Cursor {
     }
 
     _getCell(point) {
-        return this.engine.getCell(point);
+        return this._engine.getCell(point);
     }
 
     _set() {
-        this.engine.setCursor();
+        this._engine.setCursor();
     }
 
     _clear() {
-        this.engine.clearCursor();
+        this._engine.clearCursor();
     }
 
     _userAction() {
-        this.engine.userAction();
+        this._engine.userAction();
     }
 
     _changeCoordinates(direction) {
@@ -61,23 +61,17 @@ class Cursor {
         return true;
     }
 
-    move(direction, initialization) {
-        if (initialization) {
-            this._set();
-            return true;
-        }
-
+    move(direction) {
         if (!ALLOWED_DIRECTION_KEYS.includes(direction)) {
             return false;
         }
 
         const changed = this._changeCoordinates(direction);
-        
-        if (changed) {
-            this._userAction();
-            this._clear();
-            this._set();
-        }
+        if (!changed) return false;
+
+        this._userAction();
+        this._clear();
+        this._set();
         
         return true;
     }
