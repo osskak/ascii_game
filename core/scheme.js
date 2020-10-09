@@ -17,8 +17,8 @@ const {
     X,
     Y,
     RECURSION_MAX_CALL,
-} = require('./config');
-const { getCoordinate } = require('./helpers');
+} = require('../config');
+const { getCoordinate } = require('../lib/helpers');
 
 class Scheme {
     constructor(cursor) {

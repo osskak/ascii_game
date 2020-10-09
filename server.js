@@ -5,7 +5,7 @@ const {
     errorHandler,
 } = require('./handlers');
 const { HOST, PORT } = require('./config');
-const initialize = require('./initialize');
+const initialize = require('./lib/initialize');
 
 const net = require('net');
 

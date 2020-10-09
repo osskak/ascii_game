@@ -9,8 +9,8 @@ const {
     COORDINATES_MAX,
     DIRECTION_COORDINATES,
     DIRECTION_STEPS,
-} = require('./config');
-const { getCoordinate } = require('./helpers');
+} = require('../config');
+const { getCoordinate } = require('../lib/helpers');
 
 class Cursor {
     constructor(engine) {

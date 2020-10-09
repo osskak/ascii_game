@@ -1,7 +1,9 @@
 const {
     removeSocket,
     getKey,
-} = require('./helpers');
+    sockets,
+    socketsMap,
+} = require('../lib/helpers');
 
 const dataHandler = (socket, engine) => (data) => {
     try {

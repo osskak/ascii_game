@@ -2,7 +2,7 @@ const {
     ASCII: {
         MONET_SIGN,
     },
-} = require('./config');
+} = require('../config');
 
 class User {
     constructor(cursor) {

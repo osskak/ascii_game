@@ -3,8 +3,8 @@ const {
     OVER_MESSAGE,
     TIME_MESSAGE,    
     MONET,
-} = require('./config');
-const { getTime } = require('./helpers');
+} = require('../config');
+const { getTime } = require('../lib/helpers');
 
 const Cursor = require('./cursor');
 const User = require('./user');
