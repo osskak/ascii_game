@@ -2,6 +2,7 @@ const {
     ASCII: {
         COVER,
         WALL_SIGN,
+        CURSOR,
     },
     ALLOWED_DIRECTION_KEYS,
     X,
@@ -13,7 +14,8 @@ const {
 const { getCoordinate } = require('../lib/helpers');
 
 class Cursor {
-    constructor(engine) {
+    constructor(socket, engine) {
+        this._socket = socket;
         this._engine = engine;
         this.previous = {
             x: getCoordinate(X),
@@ -28,15 +30,15 @@ class Cursor {
     }
 
     _set() {
-        this._engine.setCursor();
+        this._engine.setCursor(this._socket);
     }
 
     _clear() {
-        this._engine.clearCursor();
+        this._engine.clearCursor(this._socket);
     }
 
     _userAction() {
-        this._engine.userAction();
+        this._engine.userAction(this._socket);
     }
 
     _changeCoordinates(direction) {
@@ -51,7 +53,7 @@ class Cursor {
         };
         const sign = this._getCell(current);
 
-        if (value < 1 || value > max || sign === WALL_SIGN) {
+        if (value < 1 || value > max || [WALL_SIGN, CURSOR].includes(sign)) {
             return false;
         }
 

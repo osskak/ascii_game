@@ -5,7 +5,6 @@ const {
     errorHandler,
 } = require('./handlers');
 const { HOST, PORT } = require('./config');
-const initialize = require('./lib/initialize');
 
 const net = require('net');
 
@@ -13,9 +12,7 @@ const netServer = net.createServer((socket) => {
     const { remoteAddress, remotePort } = socket;
     console.log(`CONNECTED: ${remoteAddress}:${remotePort}`);
 
-    const engine = initialize(socket);
-
-    socket.on('data', dataHandler(socket, engine));
+    socket.on('data', dataHandler(socket));
 
     socket.on('close', closeHandler(socket));
 

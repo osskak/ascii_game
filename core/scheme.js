@@ -21,15 +21,15 @@ const {
 const { getCoordinate } = require('../lib/helpers');
 
 class Scheme {
-    constructor(cursor) {
-        this._cursor = cursor;
+    constructor(socket, cursors) {
+        this._cursors = cursors;
         this._restarts = 0;
         this._size = SIZE;
         this._maxCalls = RECURSION_MAX_CALL;
 
         this._rows = null;
         this.counts = {};
-        this._create();
+        this._create(socket);
     }
 
     _setCells(type) {
@@ -81,17 +81,17 @@ class Scheme {
         return filtered.length > 2;
     }
 
-    setCursor() {
-        const { x, y } = this._cursor.current;
+    setCursor(socket) {
+        const { x, y } = this._cursors.get(socket).current;
         this._rows[y][x] = CURSOR;
     }
 
-    clearCursor() {
-        const { x, y } = this._cursor.previous;
+    clearCursor(socket) {
+        const { x, y } = this._cursors.get(socket).previous;
         this._rows[y][x] = CLEAR;
     }
 
-    _create() {
+    _create(socket) {
         const fenceRow = new Array(WIDTH + 2).fill(WALL_SIGN);
         const row = new Array(WIDTH + 2).fill(COVER);
         row[0] = row[row.length - 1] = WALL_SIGN;
@@ -100,7 +100,7 @@ class Scheme {
         this._rows.push(fenceRow.slice());
         this._rows.unshift(fenceRow.slice());
 
-        this.setCursor();
+        this.setCursor(socket);
         this._setCells(WALL);
         this._setCells(MONET);
     }

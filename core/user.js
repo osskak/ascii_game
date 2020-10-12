@@ -5,7 +5,8 @@ const {
 } = require('../config');
 
 class User {
-    constructor(cursor) {
+    constructor(cursor, username) {
+        this.name = username; 
         this.score = 0;
         this.steps = 0;
         this._cursor = cursor;

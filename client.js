@@ -1,13 +1,20 @@
-const { HOST, PORT } = require('./config');
 const net = require('net');
 const readline = require('readline');
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
+const { HOST, PORT } = require('./config');
+const { 
+    usernameQuestion,
+    gameTypeQuestion,
+ } = require('./questions');
 
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 const client = new net.Socket();
 
-client.connect(PORT, HOST, () => {
-    console.log(`CONNECTED TO: ${HOST}:${PORT}`);
+const handleKeyboard = () => {
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
     process.stdin.on('keypress', (str, key) => {
         try {
             if (client.destroyed) return;
@@ -17,6 +24,29 @@ client.connect(PORT, HOST, () => {
             process.exit(1);
         }
     });
+};
+
+client.connect(PORT, HOST, async () => {
+    try {
+        console.log(`CONNECTED TO: ${HOST}:${PORT}`);
+    
+        const username = await usernameQuestion(rl);
+        const gameType = await gameTypeQuestion(rl);
+
+        handleKeyboard();
+
+        const data = {
+            username,
+            gameType,
+        };
+        client.write(JSON.stringify(data));
+    } catch (error) {
+        console.error(error);
+        if (!client.destroyed) {
+            client.destroy();
+        }
+        process.exit(1);
+    }
 });
 
 client.on('data', (data) => {
