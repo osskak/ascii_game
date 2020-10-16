@@ -3,6 +3,7 @@ const {
         COVER,
         WALL_SIGN,
         CURSOR,
+        MONET_SIGN,
     },
     ALLOWED_DIRECTION_KEYS,
     X,
@@ -14,15 +15,31 @@ const {
 const { getCoordinate } = require('../lib/helpers');
 
 class Cursor {
-    constructor(socket, engine) {
+    constructor(socket, engine, gameStarted) {
         this._socket = socket;
         this._engine = engine;
-        this.previous = {
+        this.sign = COVER;
+
+        this.previous = null;
+        this.current = null;
+        this._init(gameStarted);
+    }
+
+    _init(gameStarted) {
+        const point = {
             x: getCoordinate(X),
             y: getCoordinate(Y),
         };
-        this.current = this.previous;
-        this.sign = COVER;
+
+        if (gameStarted) {
+            const cell = this._getCell(point);
+            if ([MONET_SIGN, WALL_SIGN].includes(cell)) {
+                return this._init(gameStarted);
+            }
+        }
+
+        this.previous = point;
+        this.current = point;
     }
 
     _getCell(point) {

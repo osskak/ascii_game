@@ -17,6 +17,8 @@ const {
     X,
     Y,
     RECURSION_MAX_CALL,
+    USUAL_STEP_LIMIT,
+    DIAGONAL_STEP_LIMIT,
 } = require('../config');
 const { getCoordinate } = require('../lib/helpers');
 
@@ -70,15 +72,59 @@ class Scheme {
         this._rows[y][x] = CELL_TYPES[type];
     }
 
-    _existsNextStep(x, y) {
+    _isNotWall(cell) {
+        return cell !== WALL_SIGN;
+    }
+
+    _getUsualSteps(x, y) {
         const up = this._rows[y][x + 1];
         const down = this._rows[y][x - 1];
         const left = this._rows[y - 1][x]
         const right = this._rows[y + 1][x];
 
-        const steps = [up, down, left, right];
-        const filtered = steps.filter(step => step !== WALL_SIGN);
-        return filtered.length > 2;
+        const usual = [up, down, left, right];
+        return usual;
+    }
+
+    _getDiagonalSteps(x, y) {
+        const upLeft = this._rows[y + 1][x - 1];
+        const upRight = this._rows[y + 1][x + 1];
+        const downLeft = this._rows[y - 1][x - 1];
+        const downRight = this._rows[y - 1][x + 1];
+
+        const diagonal = [upLeft, upRight, downLeft, downRight];
+        return diagonal;
+    }
+
+    _existsNextStep(x, y) {
+        const usual = this._getUsualSteps(x, y);
+        const diagonal = this._getDiagonalSteps(x, y);
+        const atEnd = [1, WIDTH].includes(x) || [1, HEIGHT].includes(y);
+       
+        const usualLimit = USUAL_STEP_LIMIT;
+        const filteredUsual = usual.filter(this._isNotWall);
+        const allowedUsual = filteredUsual.length >= usualLimit;
+
+        const diagonalLimit = atEnd ? USUAL_STEP_LIMIT : DIAGONAL_STEP_LIMIT;
+        const filteredDiagonal = diagonal.filter(this._isNotWall);
+        const allowedDiagonal = filteredDiagonal.length >= diagonalLimit;
+        
+        return allowedUsual && allowedDiagonal;
+    }
+
+    _existsFullWall() {
+        for (let i = 1; i <= HEIGHT; i++) {
+            // check if exists horizontal wall line
+            const exists = this._rows[i].every(cell => cell === WALL_SIGN);
+            if (exists) return true;
+        }
+        for (let i = 1; i <= WIDTH; i++) {
+            // check if exists vertical wall line
+            const vertical = this._rows.map(row => row[i]);
+            const exists = vertical.every(cell => cell === WALL_SIGN);
+            if (exists) return true;
+        }
+        return false;
     }
 
     setCursor(socket) {
@@ -103,6 +149,10 @@ class Scheme {
         this.setCursor(socket);
         this._setCells(WALL);
         this._setCells(MONET);
+
+        if (this._existsFullWall()) {
+            this._create(socket);
+        }
     }
 
     getCell(point) {

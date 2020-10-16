@@ -1,5 +1,5 @@
 const MOVE_POINTS = 1;
-const HEIGHT = 5;
+const HEIGHT = 10;
 const WIDTH = 25;
 const WALL_SIGN = '#';
 const CURSOR = '@';
@@ -9,9 +9,11 @@ const CLEAR = ' ';
 const WALL_PERCENTAGE = 15;
 const MONET_PERCENTAGE = 15;
 const SIZE = WIDTH * HEIGHT;
-const RECURSION_MAX_CALL_MULTIPLIER = 10;
+const RECURSION_MAX_CALL_MULTIPLIER = 20;
 const RECURSION_MAX_CALL = SIZE * RECURSION_MAX_CALL_MULTIPLIER;
 const MAX_PLAYERS = 2;
+const USUAL_STEP_LIMIT = 2;
+const DIAGONAL_STEP_LIMIT = 4;
 
 const UP = 'up';
 const DOWN = 'down';
@@ -120,4 +122,6 @@ module.exports = {
     MAX_PLAYERS,
     GAME_TYPES,
     ALLOWED_GAME_TYPES,
+    USUAL_STEP_LIMIT,
+    DIAGONAL_STEP_LIMIT,
 };

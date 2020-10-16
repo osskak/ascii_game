@@ -1,16 +1,14 @@
 {
-    "name": "ascii_game",
-    "version": "1.0.0",
-    "private": true,
-    "dependencies": {
-    
-    },
-    "scripts": {
-      "server": "node server.js",
-      "client": "node client.js"
-    },
-    "devDependencies": {
-
-    }
+  "name": "ascii_game",
+  "version": "1.0.1",
+  "private": true,
+  "dependencies": {},
+  "scripts": {
+    "server": "node server.js",
+    "client": "node client.js",
+    "test": "mocha --timeout 120000"
+  },
+  "devDependencies": {
+    "mocha": "^8.1.3"
+  }
 }
-  

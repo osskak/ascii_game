@@ -12,7 +12,8 @@ const Scheme = require('./scheme');
 
 class Engine {
     constructor(socket, username) {
-        const cursor = new Cursor(socket, this);
+        const gameStarted = false;
+        const cursor = new Cursor(socket, this, gameStarted);
         const user = new User(cursor, username);
 
         this._cursors = new Map([[socket, cursor]]);
@@ -26,7 +27,8 @@ class Engine {
     }
 
     addUser(socket, username) {
-        const cursor = new Cursor(socket, this);
+        const gameStarted = true;
+        const cursor = new Cursor(socket, this, gameStarted);
         const user = new User(cursor, username);
 
         this._users.set(socket, user);
