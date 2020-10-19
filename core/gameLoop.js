@@ -4,21 +4,21 @@ const {
     TIME_MESSAGE,    
     MONET,
 } = require('../config');
-const { getTime } = require('../lib/helpers');
 
+const { Util } = require('../lib');
 const Cursor = require('./cursor');
-const User = require('./user');
-const Scheme = require('./scheme');
+const Player = require('./player');
+const GameMap = require('./gameMap');
 
-class Engine {
+class GameLoop {
     constructor(socket, username) {
         const gameStarted = false;
         const cursor = new Cursor(socket, this, gameStarted);
-        const user = new User(cursor, username);
+        const player = new Player(cursor, username);
 
         this._cursors = new Map([[socket, cursor]]);
-        this._users = new Map([[socket, user]]);
-        this._scheme = new Scheme(socket, this._cursors);
+        this._players = new Map([[socket, player]]);
+        this._map = new GameMap(socket, this._cursors);
         
         this._output = null;
         this._startDate = null;
@@ -26,52 +26,52 @@ class Engine {
         this.over = false;
     }
 
-    addUser(socket, username) {
+    addPlayer(socket, username) {
         const gameStarted = true;
         const cursor = new Cursor(socket, this, gameStarted);
-        const user = new User(cursor, username);
+        const player = new Player(cursor, username);
 
-        this._users.set(socket, user);
+        this._players.set(socket, player);
         this._cursors.set(socket, cursor);
         this.setCursor(socket);
     }
 
     setCursor(socket) {
-        this._scheme.setCursor(socket);
+        this._map.setCursor(socket);
     }
 
     clearCursor(socket) {
-        this._scheme.clearCursor(socket);
+        this._map.clearCursor(socket);
     }
 
     getCell(point) {
-        return this._scheme.getCell(point);
+        return this._map.getCell(point);
     }
 
-    userAction(socket) {
-        this._users.get(socket).action();
+    playerAction(socket) {
+        this._players.get(socket).action();
     }
 
     _totalScore() {
-        let users = this._users.values();
-        users = Array.from(users);
-        return users.reduce((total, user) => total += user.score, 0);
+        let players = this._players.values();
+        players = Array.from(players);
+        return players.reduce((total, player) => total += player.score, 0);
     }
 
     _checkOver() {
-        if (this._totalScore() === this._scheme.counts[MONET]) {
+        if (this._totalScore() === this._map.counts[MONET]) {
             this._finishDate = new Date();
             this.over = true;
         }
     }
 
-    _getUsersData() {
-        let users = this._users.values();
-        users = Array.from(users);
-        return users.reduce((total, user, index) => {
-            const { name, score, steps } = user;
+    _getPlayersData() {
+        let players = this._players.values();
+        players = Array.from(players);
+        return players.reduce((total, player, index) => {
+            const { name, score, steps } = player;
             total += `Player: "${name}" score: ${score} steps: ${steps}`;
-            if (index !== users.length - 1) {
+            if (index !== players.length - 1) {
                 total += '\n';
             }
             return total;
@@ -79,12 +79,12 @@ class Engine {
     }
 
     _renderOutput() {
-        const map = this._scheme.render();
-        const usersData = this._getUsersData();
-        let output = `${map}\n${usersData}`;
+        const map = this._map.render();
+        const playersData = this._getPlayersData();
+        let output = `${map}\n${playersData}`;
         
         if (this.over) {
-            const time = getTime(this._startDate, this._finishDate);
+            const time = Util.getTime(this._startDate, this._finishDate);
             output = `${output}\n${OVER_MESSAGE}\n${TIME_MESSAGE}: ${time}`;
         } else {
             output = `${EXIT_MESSAGE}\n${output}`;
@@ -109,4 +109,4 @@ class Engine {
     }
 }
 
-module.exports = Engine;
+module.exports = GameLoop;

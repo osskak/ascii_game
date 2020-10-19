@@ -3,8 +3,8 @@ Test field generation and posibility to finish game by predefined count of steps
 In case of errors first of all please change config values.
 */
 
-const initialize = require('../player/initialize');
-const { getTime } = require('../lib/helpers');
+const { GameClient } = require('../core');
+const { Util } = require('../lib');
 
 const { ALLOWED_DIRECTION_KEYS, DIRECTION_KEYS } = require('../config');
 const {
@@ -60,26 +60,26 @@ const getUserData = () => {
 function testGameLoop() {
     for (; counter <= TOTAL_GAMES; counter++) {
         const { socket, username } = getUserData();
-        const engine = init(socket, username);
-        if (!engine) break;
+        const gameLoop = init(socket, username);
+        if (!gameLoop) break;
 
-        render(engine);
-        engineLogs();
+        render(gameLoop);
+        gameLoopLogs();
     }
     return finishLogs();
 }
 
-function render(engine) {
+function render(gameLoop) {
     try {
         for (let step = 1; step <= TOTAL_STEPS; step++) {
             const initialized = false;
             let output;
             sockets.forEach(socket => {
                 const direction = getDirection();
-                output = engine.render(socket, direction, initialized)
+                output = gameLoop.render(socket, direction, initialized)
             });
 
-            if (engine.over) {
+            if (gameLoop.over) {
                 finished++;
                 break;
             }
@@ -92,25 +92,25 @@ function render(engine) {
 
 function init(socket, username) {
     try {
-        const engine = initialize(socket, username);
+        const gameLoop = GameClient.initialize(socket, username);
 
         const direction = null;
         const initialized = true;
-        engine.render(socket, direction, initialized);
+        gameLoop.render(socket, direction, initialized);
 
         const user = getUserData();
-        engine.addUser(user.socket, user.username);
-        return engine;
+        gameLoop.addPlayer(user.socket, user.username);
+        return gameLoop;
     } catch (e) {
         initializeErrors.push(e);
     }
 }
 
-function engineLogs() {
+function gameLoopLogs() {
     process.stdout.write('\x1b[H\x1b[2J');
     process.stdout.write(`Processed games: ${format(counter)}/${format(TOTAL_GAMES)}\n`);
     process.stdout.write(`Finished games: ${format(finished)}/${format(TOTAL_GAMES)}\n`);
-    process.stdout.write(`Spent time: ${getTime(startTime, new Date())}\n`);
+    process.stdout.write(`Spent time: ${Util.getTime(startTime, new Date())}\n`);
 }
 
 function finishLogs() {

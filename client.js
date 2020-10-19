@@ -2,8 +2,8 @@ const net = require('net');
 const readline = require('readline');
 const { HOST, PORT } = require('./config');
 const { 
-    usernameQuestion,
-    gameTypeQuestion,
+    UsernameQuestion,
+    GameTypeQuestion,
  } = require('./questions');
 
 const rl = readline.createInterface({
@@ -30,8 +30,8 @@ client.connect(PORT, HOST, async () => {
     try {
         console.log(`CONNECTED TO: ${HOST}:${PORT}`);
     
-        const username = await usernameQuestion(rl);
-        const gameType = await gameTypeQuestion(rl);
+        const username = await UsernameQuestion.ask(rl);
+        const gameType = await GameTypeQuestion.ask(rl);
 
         handleKeyboard();
 

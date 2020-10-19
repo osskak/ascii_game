@@ -10,12 +10,12 @@ const {
     DIRECTION_COORDINATES,
     DIRECTION_STEPS,
 } = require('../config');
-const { getCoordinate } = require('../lib/helpers');
+const { Util } = require('../lib');
 
 class Cursor {
-    constructor(socket, engine, gameStarted) {
+    constructor(socket, gameLoop, gameStarted) {
         this._socket = socket;
-        this._engine = engine;
+        this._gameLoop = gameLoop;
         this.sign = COVER;
 
         this.previous = null;
@@ -25,8 +25,8 @@ class Cursor {
 
     _init(gameStarted) {
         const point = {
-            x: getCoordinate(X),
-            y: getCoordinate(Y),
+            x: Util.getCoordinate(X),
+            y: Util.getCoordinate(Y),
         };
 
         if (gameStarted) {
@@ -41,19 +41,19 @@ class Cursor {
     }
 
     _getCell(point) {
-        return this._engine.getCell(point);
+        return this._gameLoop.getCell(point);
     }
 
     _set() {
-        this._engine.setCursor(this._socket);
+        this._gameLoop.setCursor(this._socket);
     }
 
     _clear() {
-        this._engine.clearCursor(this._socket);
+        this._gameLoop.clearCursor(this._socket);
     }
 
-    _userAction() {
-        this._engine.userAction(this._socket);
+    _playerAction() {
+        this._gameLoop.playerAction(this._socket);
     }
 
     _changeCoordinates(direction) {
@@ -86,7 +86,7 @@ class Cursor {
         const changed = this._changeCoordinates(direction);
         if (!changed) return false;
 
-        this._userAction();
+        this._playerAction();
         this._clear();
         this._set();
         

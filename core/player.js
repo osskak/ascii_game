@@ -1,6 +1,6 @@
 const { MONET_SIGN } = require('../config');
 
-class User {
+class Player {
     constructor(cursor, username) {
         this.name = username; 
         this.score = 0;
@@ -16,4 +16,4 @@ class User {
     }
 }
 
-module.exports = User;
+module.exports = Player;

@@ -1,9 +1,7 @@
-const usernameQuestion = require('./usernameQuestion');
-const gameTypeQuestion = require('./gameTypeQuestion');
-const { askQuestion } = require('./helpers');
+const UsernameQuestion = require('./usernameQuestion');
+const GameTypeQuestion = require('./gameTypeQuestion');
 
 module.exports = {
-    usernameQuestion,
-    gameTypeQuestion,
-    askQuestion,
+    UsernameQuestion,
+    GameTypeQuestion,
 };

@@ -1,23 +1,31 @@
-const { askQuestion } = require('./helpers');
+const Question = require('./question');
 
-const usernameMessage = 'Please, enter your username and press "enter" key\n';
-const usernameResponse = (username) => `Your username is "${username}"`;
+const message = 'Please, enter your username and press "enter" key\n';
+const validationMessage = 'Allowed only letter and digits in username with length from 3 to 20 symbols';
 const regExp = /^[a-zA-Z0-9]{3,20}$/;
 
-const checkUsername = (username) => {
-    const valid = regExp.test(username);
-    if (!valid) {
-        return `Allowed only letter and digits in username with length from 3 to 20 symbols`;
+class UsernameQuestion {
+    static _message = message;
+
+    static _response(username) {
+        return `Your username is "${username}"`;
     }
-};
 
-const usernameQuestion = async (rl) => {
-    return askQuestion({ 
-        rl,
-        message: usernameMessage, 
-        response: usernameResponse, 
-        checkAnswer: checkUsername,
-    });
-};
+    static _checkAnswer(username) {
+        const valid = regExp.test(username);
+        if (!valid) {
+            return validationMessage;
+        }
+    }
 
-module.exports = usernameQuestion;
+    static ask(rl) {
+        return Question.ask({
+            rl,
+            message: UsernameQuestion._message, 
+            response: UsernameQuestion._response, 
+            checkAnswer: UsernameQuestion._checkAnswer,
+        });
+    }
+}
+
+module.exports = UsernameQuestion;
