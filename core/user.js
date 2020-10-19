@@ -1,8 +1,4 @@
-const { 
-    ASCII: {
-        MONET_SIGN,
-    },
-} = require('../config');
+const { MONET_SIGN } = require('../config');
 
 class User {
     constructor(cursor, username) {

@@ -1,10 +1,8 @@
 const { 
-    ASCII: {
-        COVER,
-        WALL_SIGN,
-        CURSOR,
-        MONET_SIGN,
-    },
+    COVER,
+    WALL_SIGN,
+    CURSOR,
+    MONET_SIGN,
     ALLOWED_DIRECTION_KEYS,
     X,
     Y,
