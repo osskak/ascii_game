@@ -1,4 +1,5 @@
 const env = require('../env');
+const { TCP } = require('./constants');
 
 const HEIGHT = env.HEIGHT || 10;
 const WIDTH = env.WIDTH || 25;
@@ -24,4 +25,5 @@ module.exports = {
     WIDTH,
     SIZE,
     RECURSION_MAX_CALL,
+    PROTOCOL: env.PROTOCOL || TCP,
 };

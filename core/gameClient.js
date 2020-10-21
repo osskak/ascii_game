@@ -67,6 +67,7 @@ class GameClient {
     }
 
     static handle(socket, gameLoop, data) {
+        if (!gameLoop) return;
         const key = Util.getKey(socket, data);
         if (!key) return;
         

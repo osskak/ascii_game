@@ -37,7 +37,7 @@ let finished = 0;
 let counter = 1;
 const startTime = new Date();
 const TOTAL_GAMES = 1e3;
-const TOTAL_STEPS = 5e5;
+const STEPS_LIMIT = 5e5;
 
 const getDirection = () => {
     const index = Math.round(Math.random() * DIRECTION_MULTIPLIER);
@@ -71,7 +71,7 @@ function testGameLoop() {
 
 function render(gameLoop) {
     try {
-        for (let step = 1; step <= TOTAL_STEPS; step++) {
+        for (let step = 1; step <= STEPS_LIMIT; step++) {
             const initialized = false;
             let output;
             sockets.forEach(socket => {
@@ -121,7 +121,7 @@ function finishLogs() {
     const data = {
         directions: directionsCopy,
         totalGames: format(TOTAL_GAMES),
-        totalSteps: format(TOTAL_STEPS),
+        stepsLimit: format(STEPS_LIMIT),
         finished: format(finished),
         initializeErrorsCount: format(initializeErrors.length),
         renderErrorsCount: format(renderErrors.length),

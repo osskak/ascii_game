@@ -21,4 +21,7 @@ module.exports = {
     SINGLE_PLAYER_TYPE: 'single-player',
     MULTI_PLAYER_VALUE: '2',
     MULTI_PLAYER_TYPE: 'multi-player',
+    TCP: 'TCP',
+    UDP: 'UDP',
+    WEBSOCKET: 'WEBSOCKET',
 };

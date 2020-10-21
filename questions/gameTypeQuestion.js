@@ -1,4 +1,4 @@
-const Question = require('./question');
+const BaseQuestion = require('./baseQuestion');
 const { Util } = require('../lib');
 const {
     SINGLE_PLAYER_VALUE,
@@ -15,7 +15,7 @@ const message = `Please, chose type of game (press number on keyboard)
 `;
 const validationMessage = `Allowed only next game types: ${ALLOWED_GAME_TYPES.join(', ')}`
 
-class GameTypeQuestion {
+class GameTypeQuestion extends BaseQuestion {
     static _message = message;
 
     static _response(answer) {
@@ -27,15 +27,6 @@ class GameTypeQuestion {
         if (!valid) {
             return validationMessage;
         }
-    }
-
-    static ask(rl) {
-        return Question.ask({ 
-            rl,
-            message: GameTypeQuestion._message, 
-            response: GameTypeQuestion._response, 
-            checkAnswer: GameTypeQuestion._checkAnswer,
-        });
     }
 }
 

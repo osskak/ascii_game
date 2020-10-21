@@ -2,7 +2,7 @@ const testGameLoop = require('./gameLoop');
 const assert = require('assert').strict;
 
 describe('Test Game Loop', () => {
-    it('Map should render and game must be finished without any errors', (done) => {
+    it('Map should render and all games must be finished successfully', (done) => {
         const data = testGameLoop();
         const {
             totalGames,

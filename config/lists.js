@@ -7,6 +7,9 @@ const {
     MULTI_PLAYER_VALUE,
     WALL,
     MONET,
+    TCP,
+    UDP,
+    WEBSOCKET,
 } = require('./constants');
 const {
     MONET_SIGN, 
@@ -33,5 +36,10 @@ module.exports = {
         MONET_SIGN, 
         WALL_SIGN, 
         CURSOR
+    ],
+    PROTOCOLS: [
+        TCP,
+        UDP,
+        WEBSOCKET,
     ],
 };
