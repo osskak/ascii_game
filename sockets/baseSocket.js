@@ -11,17 +11,17 @@ class BaseSocket {
 
     _init() {
         // set address and port defined
-        Util.throwMethodErrorMessage('_init', this.name);
+        Util.throwMethodError('_init', this.name);
     }
 
     write() {
         // write data to socket
-        Util.throwMethodErrorMessage('write', this.name);
+        Util.throwMethodError('write', this.name);
     }
 
     destroy() {
         // destroy socket connection
-        Util.throwMethodErrorMessage('destroy', this.name);
+        Util.throwMethodError('destroy', this.name);
     }
 }
 

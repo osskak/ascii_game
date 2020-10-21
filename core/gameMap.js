@@ -39,6 +39,9 @@ class GameMap {
 
         const percentage = CELL_PERCETAGE[type];
         const count = Math.floor(this._size * percentage / 100);
+        if (count === 0) {
+            throw new Error(`Can't render map without any "${type}"`);
+        }
         this.counts[type] = count;
      
         for (let i = 0; i < count; i++) {

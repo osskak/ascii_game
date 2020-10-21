@@ -5,17 +5,17 @@ class BaseQuestion {
 
     static _response() {
         // send response to the client
-        Util.throwMethodErrorMessage('_response', this.name);
+        Util.throwMethodError('_response', this.name);
     } 
 
     static _checkAnswer() {
         // check client input
-        Util.throwMethodErrorMessage('_checkAnswer', this.name);
+        Util.throwMethodError('_checkAnswer', this.name);
     }
 
     static ask(readlineInterface) {
         if (!this._message) {
-            Util.throwPropertyErrorMessage('_message', this.name);
+            Util.throwPropertyError('_message', this.name);
         }
 
         return new Promise((resolve) => {

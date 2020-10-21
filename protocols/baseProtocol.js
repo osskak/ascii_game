@@ -3,12 +3,12 @@ const { Util } = require('../lib');
 class BaseProtocol {
     static start() {
         // create server side of protocol
-        Util.throwMethodErrorMessage('start', this.name);
+        Util.throwMethodError('start', this.name);
     }
 
     static connect() {
         // client side connection (connect to server side of protocol)
-        Util.throwMethodErrorMessage('connect', this.name);
+        Util.throwMethodError('connect', this.name);
     }
 }
 

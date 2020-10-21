@@ -13,9 +13,9 @@ const {
 const { Util } = require('../lib');
 
 class Cursor {
-    constructor(socket, gameLoop, gameStarted) {
+    constructor(socket, gameState, gameStarted) {
         this._socket = socket;
-        this._gameLoop = gameLoop;
+        this._gameState = gameState;
         this.sign = COVER;
 
         this.previous = null;
@@ -41,19 +41,19 @@ class Cursor {
     }
 
     _getCell(point) {
-        return this._gameLoop.getCell(point);
+        return this._gameState.getCell(point);
     }
 
     _set() {
-        this._gameLoop.setCursor(this._socket);
+        this._gameState.setCursor(this._socket);
     }
 
     _clear() {
-        this._gameLoop.clearCursor(this._socket);
+        this._gameState.clearCursor(this._socket);
     }
 
     _playerAction() {
-        this._gameLoop.playerAction(this._socket);
+        this._gameState.playerAction(this._socket);
     }
 
     _changeCoordinates(direction) {

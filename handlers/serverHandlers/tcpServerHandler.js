@@ -1,5 +1,5 @@
 const { HOST, PORT } = require('../../config');
-const { GameClient } = require('../../core');
+const { GameLoop } = require('../../core');
 const { Socket } = require('../../lib');
 const { TCPSocket } = require('../../sockets');
 
@@ -29,13 +29,8 @@ class TCPServerHandler {
 
     static onSocketData(socket) {
         return (data) => {
-            try {
-                const gameLoop = GameClient.launch(socket, data);
-                GameClient.handle(socket, gameLoop, data);
-            } catch (error) {
-                const over = false;
-                Socket.remove(socket, over, error);
-            }
+            const gameLoop = new GameLoop(socket, data);
+            gameLoop.execute();
         };
     }
 
