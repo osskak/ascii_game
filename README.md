@@ -1,14 +1,34 @@
 # ASCII Game
 Simple ASCII game. Realized a single-player and multi-player format. For now, realized only support of TCP protocol.
 
-To create server please run command in the projects root directory:
+To install the application please run the command:
+```
+git clone https://github.com/osskak/ascii_game.git
+```
+
+After it, go to the root directory:
+```
+cd ascii_game
+```
+
+And install dependencies (recommend to use node.js version 12+):
+```
+npm install
+```
+
+To start tests please run the command (also, recommend to run tests after each change in config):
+```
+npm test
+```
+
+To create a server please run the command in the projects root directory:
 ```
 npm run server
 ```
 ![running of server](https://github.com/osskak/ascii_game/blob/master/static/img/server.png?raw=true)
 
 
-For creating each client please run command in the projects root directory:
+For creating each client please run the command in the projects root directory:
 ```
 npm run client
 ```
